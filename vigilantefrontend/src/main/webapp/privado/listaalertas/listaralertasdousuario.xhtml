@@ -1,0 +1,225 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:panelGroup id="allPanel" layout="block"
+			styleClass="layout-portlets-box">
+
+			<h:panelGroup layout="block" rendered="#{empty listarAlertasDoUsuarioMB.alertaSelecionado and empty listarAlertasDoUsuarioMB.visualizacaoImagem}"
+				styleClass="Container100">
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Meus alertas</span>
+				</h1>
+
+				<h:form id="formCadastro">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+					
+					<p:remoteCommand
+						onstart="recuperarTamanhoDiv([{name:'localizacaoEstaticaUrlLargura', value:document.getElementById('formCadastro').offsetWidth}])"
+						autoRun="true" process="@this" ignoreAutoUpdate="true"/>
+					<p:remoteCommand name="recuperarTamanhoDiv"
+						actionListener="#{listarAlertasDoUsuarioMB.registrarLocalizacaoEstaticaUrlLargura()}" ignoreAutoUpdate="true"/>
+					
+
+					<div class="EmptyBox10"></div>
+
+					<p:dataTable var="alerta" selectionMode="single"
+						selection="#{listarAlertasDoUsuarioMB.alertaSelecionado}"
+						rowKey="#{alerta.id}" value="#{listarAlertasDoUsuarioMB.alertas}"
+						emptyMessage="Não há alerta emitido.">
+
+						<p:ajax event="rowSelect"
+							listener="#{listarAlertasDoUsuarioMB.onRowSelect}"
+							update="allPanel" />
+
+						<p:column headerText="Data de criação">
+							<h:outputText value="#{alerta.dataCriacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Data de recepção">
+							<h:outputText value="#{alerta.dataRecepcao}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Placa">
+							<h:outputText value="#{alerta.veiculo.placa}" />
+						</p:column>
+					</p:dataTable>
+
+					<div class="EmptyBox10"></div>
+					<div class="Container100">
+						<p:commandButton value="Voltar" immediate="true"
+							action="#{navegacaoMB.getHome()}" icon="fa fa-close Fs16 white" />
+					</div>
+
+				</h:form>
+
+
+			</h:panelGroup>
+
+			<h:panelGroup layout="block"
+				rendered="#{not empty listarAlertasDoUsuarioMB.alertaSelecionado and empty listarAlertasDoUsuarioMB.visualizacaoImagem}"
+				styleClass="Container100">
+
+
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Alerta</span>
+				</h1>
+
+				<h:form id="formAlerta">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+
+					<div class="EmptyBox10"></div>
+					<p:fieldset legend="Endereço do alerta">
+
+						<p:panelGrid columns="2" layout="grid">
+
+							<h:outputText value="Logradouro:" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.logradouro}" />
+							
+							<h:outputText value="Número:" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.numero}" />
+							
+							<h:outputText value="Complemento:" rendered="#{not empty listarAlertasDoUsuarioMB.alertaSelecionado.endereco.complemento}" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.complemento}"
+								rendered="#{not empty listarAlertasDoUsuarioMB.alertaSelecionado.endereco.complemento}" />
+							
+							<h:outputText value="Bairro:" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.bairro}" />
+							
+							<h:outputText value="Cidade:" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.cidade}" />
+							
+							<h:outputText value="Estado:" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.uf}" />
+							
+							<h:outputText value="CEP:" />
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.endereco.cep}" />
+							
+							<h:outputText value="Observação:" rendered="#{not empty listarAlertasDoUsuarioMB.alertaSelecionado.veiculo.observacao}"/>
+							<h:outputText
+								value="#{listarAlertasDoUsuarioMB.alertaSelecionado.veiculo.observacao}" 
+								rendered="#{not empty listarAlertasDoUsuarioMB.alertaSelecionado.veiculo.observacao}"/>
+
+						</p:panelGrid>
+						
+						
+						<div class="EmptyBox5"></div>
+						<h3 style="margin-top: 0">Localização</h3>
+						<h:graphicImage value="#{listarAlertasDoUsuarioMB.localizacaoEstaticaURL(listarAlertasDoUsuarioMB.alertaSelecionado.endereco)}" 
+							rendered="#{not empty listarAlertasDoUsuarioMB.alertaSelecionado.endereco.latitude}"/>
+						
+					</p:fieldset>
+
+					<div class="EmptyBox10"></div>
+					<p:fieldset legend="Veículo">
+					
+						<ui:include src="/privado/reutil/veiculo.xhtml">
+							<ui:param name="veiculo" value="#{listarAlertasDoUsuarioMB.alertaSelecionado.veiculo}"/>
+						</ui:include>
+
+						<div class="EmptyBox5"></div>
+						<h3 style="margin-top: 0">Imagens</h3>
+						<ui:repeat
+							value="#{listarAlertasDoUsuarioMB.alertaSelecionado.veiculo.imagens}"
+							var="imagem" varStatus="status">
+							<div
+								class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+								<div class="ContainerIndent">
+									<p:panelGrid columns="1" layout="grid"
+										style="border:0px !important; background:none;"
+										styleClass="FormContent">
+										<p:remoteCommand name="exibirImagem#{status.index}"
+											immediate="true"
+											actionListener="#{listarAlertasDoUsuarioMB.visualizarImagem(imagem)}"
+											update="allPanel" />
+										<p:commandLink
+											onclick="exibirImagem#{status.index}([{name:'larguraDiv', value:document.getElementById('formAlerta').offsetWidth}])"
+											immediate="true" process="@this"
+											style="text-decoration: none; margin-right: 0px;">
+											<o:graphicImage value="#{imagem.imagemByte}" dataURI="true"
+												lastModified="#{imagem.ultimaAtualizacao}"
+												style="height: 100px; width: 100px" />
+										</p:commandLink>
+									</p:panelGrid>
+
+								</div>
+							</div>
+
+						</ui:repeat>
+
+
+					</p:fieldset>
+
+					<div class="EmptyBox20"></div>
+					<div class="Container100">
+						<p:commandButton value="Voltar" immediate="true"
+							actionListener="#{listarAlertasDoUsuarioMB.desselecionarAlerta()}"
+							process="@this" update="allPanel" icon="fa fa-close Fs16 white" />
+					</div>
+
+
+				</h:form>
+			</h:panelGroup>
+
+			<h:panelGroup layout="block"
+				rendered="#{not empty listarAlertasDoUsuarioMB.visualizacaoImagem}"
+				styleClass="Container100">
+
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Imagem</span>
+				</h1>
+
+				<h:form id="formImagem">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+
+					<o:graphicImage
+						value="#{listarAlertasDoUsuarioMB.visualizacaoImagem.imagemByte}"
+						dataURI="true"
+						lastModified="#{listarAlertasDoUsuarioMB.visualizacaoImagem.ultimaAtualizacao}"
+						style="width: #{listarAlertasDoUsuarioMB.visualizacaoImagemLargura}" />
+
+					<div class="EmptyBox20"></div>
+					<div class="Container100">
+						<p:commandButton value="Voltar" immediate="true"
+							actionListener="#{listarAlertasDoUsuarioMB.voltarVisualizacaoImagem()}"
+							process="@this" update="allPanel" icon="fa fa-close Fs16 white" />
+					</div>
+
+
+				</h:form>
+			</h:panelGroup>
+
+		</h:panelGroup>
+
+
+	</ui:define>
+
+</ui:composition>

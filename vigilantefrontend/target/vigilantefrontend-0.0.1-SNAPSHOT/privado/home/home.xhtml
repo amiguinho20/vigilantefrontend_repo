@@ -1,0 +1,114 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="head">
+		<script type="text/javascript">
+			function recuperarGeocode()
+			{
+				if (navigator.geolocation)
+			    {
+			        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);  
+			    } else {
+			        //alert("Seu navegador ou dispositivo não suporta a Geolocalização");
+			    }
+			}
+			function onGeoSuccess(event)
+			{
+			    document.getElementById("form:latitude").value =  event.coords.latitude; 
+			    document.getElementById("form:longitude").value = event.coords.longitude;
+			}
+			function onGeoError(event)
+			{
+			    //alert("Error code: " + event.code + ". " + event.message);
+			}
+		</script>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="layout-portlets-box">
+			<div class="Container100">
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Painel de controle</span>
+				</h1>
+				<h:form id="form">
+					<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" escape="false" />
+					<p:focus />
+					<p:remoteCommand name="onload" onstart="recuperarGeocode()" autoRun="true" />
+					<h:inputHidden id="latitude" value="#{usuarioLogadoMB.latitude}" />
+					<h:inputHidden id="longitude" value="#{usuarioLogadoMB.longitude}" />
+					
+					<div class="Container100">
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<a href="#{baseURL}#{navegacaoMB.cadastrarVeiculo}" class="">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-car Fs40 gray"></i>
+									<div class="Fs24 gray FontRalewayRegular">Cadastrar
+										veículo</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</a>
+						</div>
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<p:commandLink 
+								action="#{navegacaoMB.getCadastrarAlerta()}" style="text-decoration: none; margin-right: 0px;">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-exclamation-triangle Fs40 red MarRight10"></i>
+									<div class="Fs24 red FontRalewayRegular">Emitir alerta</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</p:commandLink>
+
+						</div>
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<a href="#" class="" onclick="alert('clicado xxx')">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-cube Fs40 gray MarRight10"></i>
+									<div class="Fs24 red FontRalewayRegular">Cadastro x3</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</a>
+						</div>
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<a href="#" class="" onclick="alert('clicado xxx')">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-cube Fs40 gray MarRight10"></i>
+									<div class="Fs24 red FontRalewayRegular">Cadastro x4</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</a>
+						</div>
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<a href="#" class="" onclick="alert('clicado xxx')">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-cube Fs40 gray MarRight10"></i>
+									<div class="Fs24 red FontRalewayRegular">Cadastro x5</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+
+	</ui:define>
+
+</ui:composition>

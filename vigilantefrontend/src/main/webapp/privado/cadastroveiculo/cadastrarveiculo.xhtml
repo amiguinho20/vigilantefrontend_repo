@@ -1,0 +1,249 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:panelGroup id="allPanel" layout="block"
+			styleClass="layout-portlets-box">
+			
+			<h:panelGroup layout="block" rendered="#{empty cadastrarVeiculoMB.visualizacaoImagem}" styleClass="Container100" >
+			
+
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Cadastro de veículo</span>
+				</h1>
+
+				<h:form id="formCadastro">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+
+					<div class="EmptyBox10"></div>
+					<p:fieldset legend="Informações do veículo">
+						<p:panelGrid columns="2" layout="grid"
+							style="border:0px !important; background:none;"
+							styleClass="FormContent">
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:inputMask id="placa" placeholder="Placa"
+									requiredMessage="A placa é obrigatória."
+									value="#{cadastrarVeiculoMB.veiculo.placa}" required="true"
+									style="text-transform: uppercase;" mask="aaa9999"
+									styleClass="Wid90">
+									<f:converter converterId="maiusculoTextoConverter" />
+								</p:inputMask>
+								<p:message for="placa" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText id="marca" styleClass="Wid90"
+									style="text-transform: uppercase;"
+									value="#{cadastrarVeiculoMB.veiculo.marca}" placeholder="Marca"
+									required="true" requiredMessage="A marca é obrigatória.">
+									<f:converter converterId="maiusculoTextoConverter" />
+								</p:inputText>
+								<p:message for="marca" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText id="modelo" styleClass="Wid90"
+									style="text-transform: uppercase;"
+									value="#{cadastrarVeiculoMB.veiculo.modelo}"
+									placeholder="Modelo" required="true"
+									requiredMessage="O modelo é obrigatório.">
+									<f:converter converterId="maiusculoTextoConverter" />
+								</p:inputText>
+								<p:message for="modelo" />
+							</p:panelGrid>
+
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:inputMask id="anoFabricacao" placeholder="Ano de fabricacao"
+									requiredMessage="O ano de fabricação é obrigatório."
+									value="#{cadastrarVeiculoMB.veiculo.anoFabricacao}"
+									required="true" mask="9999" styleClass="Wid90" />
+								<p:message for="anoFabricacao" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:inputMask id="anoModelo" placeholder="Ano do modelo"
+									requiredMessage="O ano do modelo é obrigatório."
+									value="#{cadastrarVeiculoMB.veiculo.anoModelo}" required="true"
+									mask="9999" styleClass="Wid90" />
+								<p:message for="anoModelo" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:selectOneMenu id="cor"
+									value="#{cadastrarVeiculoMB.veiculo.cor}" required="true"
+									requiredMessage="A cor é obrigatória.">
+									<f:selectItem itemLabel="Cor" noSelectionOption="true" />
+									<f:selectItems value="#{cadastrarVeiculoMB.listaDeCores}" />
+								</p:selectOneMenu>
+
+								<p:message for="cor" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:selectOneMenu id="tipo"
+									value="#{cadastrarVeiculoMB.veiculo.tipo}" required="true"
+									requiredMessage="O tipo é obrigatório.">
+									<f:selectItem itemLabel="Tipo" noSelectionOption="true" />
+									<f:selectItems value="#{cadastrarVeiculoMB.listaDeTipos}" />
+								</p:selectOneMenu>
+
+								<p:message for="tipo" />
+							</p:panelGrid>
+
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:inputTextarea id="observacao"
+									value="#{cadastrarVeiculoMB.veiculo.observacao}"
+									placeholder="Observação" />
+
+								<p:message for="observacao" />
+							</p:panelGrid>
+
+
+						</p:panelGrid>
+					</p:fieldset>
+
+					<div class="EmptyBox20"></div>
+					<p:fieldset id="imagens" legend="Imagens">
+						<div class="Container100">
+							<ui:repeat value="#{cadastrarVeiculoMB.veiculo.imagens}"
+								var="imagem" varStatus="status">
+								<div
+									class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+									<div class="ContainerIndent">
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:remoteCommand name="exibirImagem#{status.index}" 
+												immediate="true"
+												actionListener="#{cadastrarVeiculoMB.visualizarImagem(imagem)}"
+												update="allPanel" />
+											<p:commandLink
+												onclick="exibirImagem#{status.index}([{name:'larguraDiv', value:document.getElementById('formCadastro').offsetWidth}])"
+												immediate="true"
+												process="@this"
+												rendered="#{not empty imagem.imagemByte}"
+												style="text-decoration: none; margin-right: 0px;">
+												<o:graphicImage value="#{cadastrarVeiculoMB.redimencionar(imagem.imagemByte, 100, 100)}" dataURI="true"
+													lastModified="#{imagem.ultimaAtualizacao}"
+													style="height: 100px; width: 100px" />
+											</p:commandLink>
+											<p:commandButton id="excluir#{status.index}" value="Excluir"
+												process="@this"
+												actionListener="#{cadastrarVeiculoMB.excluirImagem(imagem.ultimaAtualizacao)}"
+												icon="fa fa-close Fs16 white"
+												update="formCadastro:imagens formCadastro:messages" />
+										</p:panelGrid>
+									</div>
+								</div>
+
+							</ui:repeat>
+						</div>
+
+
+
+						<p:panelGrid id="panelUpload" columns="1" layout="grid"
+							style="border:0px !important; background:none;"
+							styleClass="FormContent">
+
+							<p:fileUpload id="upload"
+								rendered="#{fn:length(cadastrarVeiculoMB.veiculo.imagens) lt 2}"
+								invalidFileMessage="Tipo de arquivo inválido. Os tipos válidos são: gif, jpg, jpeg e png."
+								fileLimitMessage="A funcionalidade permite o upload de até 2 arquivos."
+								fileUploadListener="#{cadastrarVeiculoMB.upload}"
+								invalidSizeMessage="O tamanho limite da imagem deve ser inferior a 1.5mb."
+								mode="advanced" auto="true" dragDropSupport="false"
+								multiple="false" update="imagens" sizeLimit="1500000"
+								fileLimit="2" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+								label="Adicionar imagem" />
+
+							<p:message for="upload" />
+
+						</p:panelGrid>
+
+					</p:fieldset>
+
+					<div class="EmptyBox20"></div>
+					<div class="Container100">
+						<p:commandButton value="Salvar"
+							action="#{cadastrarVeiculoMB.salvar()}"
+							icon="fa fa-check Fs16 white" update="@form" />
+						<p:commandButton value="Cancelar" immediate="true"
+							action="#{navegacaoMB.getHome()}" icon="fa fa-close Fs16 white" />
+					</div>
+
+				</h:form>
+			</h:panelGroup>
+
+			
+			<h:panelGroup layout="block" rendered="#{not empty cadastrarVeiculoMB.visualizacaoImagem}" styleClass="Container100" >
+
+
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Imagem</span>
+				</h1>
+
+				<h:form id="formImagem">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+
+					<o:graphicImage
+						value="#{cadastrarVeiculoMB.visualizacaoImagem.imagemByte}"
+						dataURI="true"
+						lastModified="#{cadastrarVeiculoMB.visualizacaoImagem.ultimaAtualizacao}" style="width: #{cadastrarVeiculoMB.visualizacaoImagemLargura}" />
+
+					<div class="EmptyBox20"></div>
+					<div class="Container100">
+						<p:commandButton value="Voltar" immediate="true"
+							actionListener="#{cadastrarVeiculoMB.voltarVisualizacaoImagem()}"
+							process="@this" update="allPanel"
+							icon="fa fa-close Fs16 white" />
+					</div>
+
+
+				</h:form>
+			</h:panelGroup>
+
+		</h:panelGroup>
+
+
+
+	</ui:define>
+
+</ui:composition>

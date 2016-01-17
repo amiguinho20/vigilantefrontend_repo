@@ -1,0 +1,270 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:panelGroup id="allPanel" layout="block"
+			styleClass="layout-portlets-box">
+
+			<h:panelGroup layout="block"
+				rendered="#{empty cadastrarAlertaMB.visualizacaoImagem}"
+				styleClass="Container100">
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Emitir alerta</span>
+				</h1>
+
+				<h:form id="formCadastro">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+
+					<div class="EmptyBox10"></div>
+					<p:fieldset legend="Endereço do alerta">
+
+
+						<div class="Container100 TexAlLeft ">
+							<div class="Fs24 FontBold red">
+								<p>Manipule as informações abaixo caso necessário.</p>
+							</div>
+						</div>
+
+
+						<p:panelGrid columns="2" layout="grid"
+							style="border:0px !important; background:none;"
+							styleClass="FormContent">
+
+							<ui:remove>
+								<p:panelGrid columns="1" layout="grid"
+									style="border:0px !important; background:none;"
+									styleClass="FormContent">
+
+									<p:inputText id="latitude" value="#{usuarioLogadoMB.latitude}"
+										placeholder="Latitude" />
+
+									<p:message for="latitude" />
+								</p:panelGrid>
+
+								<p:panelGrid columns="1" layout="grid"
+									style="border:0px !important; background:none;"
+									styleClass="FormContent">
+
+									<p:inputText id="longitude"
+										value="#{usuarioLogadoMB.longitude}" placeholder="Longitude" />
+
+									<p:message for="longitude" />
+								</p:panelGrid>
+							</ui:remove>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText styleClass="Wid90" id="logradouro"
+									value="#{cadastrarAlertaMB.alerta.endereco.logradouro}"
+									placeholder="Logradouro" required="true"
+									requiredMessage="O logradouro é obrigatório."
+									style="text-transform: capitalize;">
+									<f:converter converterId="capitalizarTextoConverter" />
+								</p:inputText>
+								<p:message for="logradouro" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText styleClass="Wid90" id="numero"
+									value="#{cadastrarAlertaMB.alerta.endereco.numero}"
+									placeholder="Número" required="true"
+									requiredMessage="O número é obrigatório." />
+								<p:message for="numero" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText styleClass="Wid90" id="complemento"
+									value="#{cadastrarAlertaMB.alerta.endereco.complemento}"
+									placeholder="Complemento" />
+								<p:message for="complemento" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText styleClass="Wid90" id="bairro"
+									value="#{cadastrarAlertaMB.alerta.endereco.bairro}"
+									placeholder="Bairro" required="true"
+									requiredMessage="O bairro é obrigatório."
+									style="text-transform: capitalize">
+									<f:converter converterId="capitalizarTextoConverter" />
+								</p:inputText>
+								<p:message for="bairro" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputText styleClass="Wid90" id="cidade"
+									value="#{cadastrarAlertaMB.alerta.endereco.cidade}"
+									placeholder="Cidade" required="true"
+									requiredMessage="A cidade é obrigatória."
+									style="text-transform: capitalize">
+									<f:converter converterId="capitalizarTextoConverter" />
+								</p:inputText>
+								<p:message for="cidade" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+
+								<p:selectOneMenu id="uf"
+									value="#{cadastrarAlertaMB.alerta.endereco.uf}"
+									styleClass="Wid90" style="width:90%" required="true"
+									requiredMessage="O estado é obrigatório.">
+									<f:selectItem itemLabel="Estado" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItem itemLabel="SP" itemValue="SP" />
+									<f:selectItem itemLabel="AC" itemValue="AC" />
+									<f:selectItem itemLabel="AL" itemValue="AL" />
+									<f:selectItem itemLabel="AP" itemValue="AP" />
+									<f:selectItem itemLabel="AM" itemValue="AM" />
+									<f:selectItem itemLabel="BA" itemValue="BA" />
+									<f:selectItem itemLabel="CE" itemValue="CE" />
+									<f:selectItem itemLabel="DF" itemValue="DF" />
+									<f:selectItem itemLabel="ES" itemValue="ES" />
+									<f:selectItem itemLabel="GO" itemValue="GO" />
+									<f:selectItem itemLabel="MA" itemValue="MA" />
+									<f:selectItem itemLabel="MT" itemValue="MT" />
+									<f:selectItem itemLabel="MS" itemValue="MS" />
+									<f:selectItem itemLabel="MG" itemValue="MG" />
+									<f:selectItem itemLabel="PA" itemValue="PA" />
+									<f:selectItem itemLabel="PB" itemValue="PB" />
+									<f:selectItem itemLabel="PR" itemValue="PR" />
+									<f:selectItem itemLabel="PE" itemValue="PE" />
+									<f:selectItem itemLabel="PI" itemValue="PI" />
+									<f:selectItem itemLabel="RJ" itemValue="RJ" />
+									<f:selectItem itemLabel="RN" itemValue="RN" />
+									<f:selectItem itemLabel="RS" itemValue="RS" />
+									<f:selectItem itemLabel="RO" itemValue="RO" />
+									<f:selectItem itemLabel="RR" itemValue="RR" />
+									<f:selectItem itemLabel="SC" itemValue="SC" />
+									<f:selectItem itemLabel="SE" itemValue="SE" />
+									<f:selectItem itemLabel="TO" itemValue="TO" />
+								</p:selectOneMenu>
+
+
+								<p:message for="uf" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" layout="grid"
+								style="border:0px !important; background:none;"
+								styleClass="FormContent">
+								<p:inputMask id="cep" placeholder="CEP"
+									requiredMessage="O CEP é obrigatório. O CEP deve conter 8 dígitos sem hífen. Exemplo: 03564010"
+									value="#{cadastrarAlertaMB.alerta.endereco.cep}"
+									required="true" mask="99999999" styleClass="Wid90" />
+								<p:message for="cep" />
+							</p:panelGrid>
+
+
+						</p:panelGrid>
+					</p:fieldset>
+
+					<div class="EmptyBox10"></div>
+					<p:fieldset legend="Veículo do alerta">
+
+						<ui:include src="/privado/reutil/veiculo.xhtml">
+							<ui:param name="veiculo" value="#{usuarioLogadoMB.usuario.veiculo}" />
+						</ui:include>
+
+						<div class="EmptyBox5"></div>
+						<h3 style="margin-top: 0">Imagens</h3>
+						<ui:repeat value="#{usuarioLogadoMB.usuario.veiculo.imagens}"
+							var="imagem" varStatus="status">
+							<div
+								class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+								<div class="ContainerIndent">
+									<p:panelGrid columns="1" layout="grid"
+										style="border:0px !important; background:none;"
+										styleClass="FormContent">
+										<p:remoteCommand name="exibirImagem#{status.index}"
+											immediate="true"
+											actionListener="#{cadastrarAlertaMB.visualizarImagem(imagem)}"
+											update="allPanel" />
+										<p:commandLink
+											onclick="exibirImagem#{status.index}([{name:'larguraDiv', value:document.getElementById('formCadastro').offsetWidth}])"
+											immediate="true" process="@this"
+											style="text-decoration: none; margin-right: 0px;">
+											<o:graphicImage value="#{imagem.imagemByte}" dataURI="true"
+												lastModified="#{imagem.ultimaAtualizacao}"
+												style="height: 100px; width: 100px" />
+										</p:commandLink>
+									</p:panelGrid>
+								</div>
+							</div>
+
+						</ui:repeat>
+
+
+					</p:fieldset>
+
+					<div class="EmptyBox10"></div>
+					<div class="Container100">
+						<p:commandButton value="Emitir" icon="fa fa-check Fs16 white"
+							update="@form" styleClass="RedButton"
+							action="#{cadastrarAlertaMB.emitirAlerta()}" />
+						<p:commandButton value="Cancelar" immediate="true"
+							action="#{navegacaoMB.getHome()}" icon="fa fa-close Fs16 white" />
+					</div>
+
+				</h:form>
+
+
+			</h:panelGroup>
+
+			<h:panelGroup layout="block"
+				rendered="#{not empty cadastrarAlertaMB.visualizacaoImagem}"
+				styleClass="Container100">
+
+
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Imagem</span>
+				</h1>
+
+				<h:form id="formImagem">
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" escape="false" />
+
+					<p:focus />
+
+					<o:graphicImage
+						value="#{cadastrarAlertaMB.visualizacaoImagem.imagemByte}"
+						dataURI="true"
+						lastModified="#{cadastrarAlertaMB.visualizacaoImagem.ultimaAtualizacao}"
+						style="width: #{cadastrarAlertaMB.visualizacaoImagemLargura}" />
+
+					<div class="EmptyBox20"></div>
+					<div class="Container100">
+						<p:commandButton value="Voltar" immediate="true"
+							actionListener="#{cadastrarAlertaMB.voltarVisualizacaoImagem()}"
+							process="@this" update="allPanel" icon="fa fa-close Fs16 white" />
+					</div>
+
+
+				</h:form>
+			</h:panelGroup>
+
+		</h:panelGroup>
+
+
+	</ui:define>
+
+</ui:composition>

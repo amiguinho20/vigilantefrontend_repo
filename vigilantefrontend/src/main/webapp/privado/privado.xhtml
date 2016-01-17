@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+
+	<h1>Página privada</h1>
+
+	<p:spinner />
+
+	<h:form>
+		<h:panelGrid columns="1">
+			<h:link value="Página ADM"     outcome="/adm/adm"/>
+			<h:link value="Página Privada" outcome="/privado/privado"/>
+			<h:link value="Página Pública" outcome="/publico"/>
+			<h:commandButton value="logout" action="#{logoutMB.desautenticar}" />
+		</h:panelGrid>
+	</h:form>
+
+</h:body>
+</html>

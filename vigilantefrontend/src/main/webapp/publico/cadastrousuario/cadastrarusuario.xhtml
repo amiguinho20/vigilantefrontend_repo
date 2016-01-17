@@ -1,0 +1,284 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	template="/WEB-INF/public_template.xhtml">
+
+
+	<ui:define name="content">
+		<h:panelGroup layout="block" id="allPanel" styleClass="classAllPanel">
+
+			<div class="layout-portlets-box">
+				<div>
+					<div class="Container100 Responsive100">
+						<div class="ContainerIndent">
+							<h1 class="BigTopic">Cadastre-se no Vigilante</h1>
+							<h:form id="formCadastro">
+								<p:messages id="messages" showDetail="false" autoUpdate="true"
+									closable="true" escape="false" />
+									
+								<p:focus />
+
+								<div class="EmptyBox10"></div>
+								<p:fieldset legend="Informações de autenticação (login)">
+									<p:panelGrid columns="2" layout="grid"
+										style="border:0px !important; background:none;"
+										styleClass="FormContent">
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="email1"
+												value="#{cadastrarUsuarioMB.usuario.email}"
+												placeholder="Email" required="true"
+												type="email"
+												validatorMessage="O formato do email está inválido."
+												requiredMessage="O email é obrigatório."
+												style="text-transform: lowercase;">
+												<f:validateRegex
+													pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+												<f:converter converterId="minusculoTextoConverter" />	
+											</p:inputText>
+											<p:message for="email1" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText id="email2"
+												styleClass="Wid90" 
+												style="text-transform: lowercase;"
+												type="email"
+												value="#{cadastrarUsuarioMB.emailConferencia}"
+												placeholder="Email de conferência" required="true"
+												validatorMessage="O formato do email de conferência está inválido."
+												requiredMessage="O email de conferência é obrigatório.">
+												<f:validateRegex
+													pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+												<f:converter converterId="minusculoTextoConverter" />	
+											</p:inputText>
+											<p:message for="email2" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:password styleClass="Wid90" id="senha1" match="senha2"
+												value="#{cadastrarUsuarioMB.usuario.password}"
+												placeholder="Senha" required="true"
+												validatorMessage="A senha deve coincidir com a senha de conferência."
+												requiredMessage="A senha é obrigatória." />
+											<p:message for="senha1" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:password styleClass="Wid90" id="senha2"
+												placeholder="Senha de conferência" required="true"
+												requiredMessage="A senha de conferência é obrigatória." />
+											<p:message for="senha2" />
+										</p:panelGrid>
+									</p:panelGrid>
+								</p:fieldset>
+
+								<div class="EmptyBox20"></div>
+								<p:fieldset legend="Informações pessoais">
+									<p:panelGrid columns="4" layout="grid"
+										style="border:0px !important; background:none;"
+										styleClass="FormContent">
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="nome"
+												value="#{cadastrarUsuarioMB.usuario.nome}"
+												placeholder="Nome completo" required="true"
+												requiredMessage="O nome completo é obrigatório."
+												style="text-transform: capitalize;" >
+													<f:converter converterId="capitalizarTextoConverter" />
+												</p:inputText>
+											<p:message for="nome" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+
+											<p:inputMask id="cpf" placeholder="CPF"
+												requiredMessage="O CPF é obrigatório. O CPF deve conter 11 dígitos sem pontos e hífen. Exemplo: 64379456307"
+												value="#{cadastrarUsuarioMB.usuario.cpf}" required="true"
+												mask="99999999999" styleClass="Wid90" />
+											<p:message for="cpf" />
+										</p:panelGrid>
+
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputMask id="rg" placeholder="RG"
+												requiredMessage="O RG é obrigatório. O RG deve conter entre 6 e 11 dígitos sem pontos e hífen."
+												value="#{cadastrarUsuarioMB.usuario.rg}" required="true"
+												mask="999999?99999" styleClass="Wid90" />
+											<p:message for="rg" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputMask id="celular" placeholder="Celular"
+												requiredMessage="O celular é obrigatório. O celular deve conter o prefixo de 2 dígitos mais o número com 8 ou 9 dígitos. Exemplo: (11) 987654321 ou (11) 87654321"
+												value="#{cadastrarUsuarioMB.usuario.celular}"
+												required="true" mask="(99) 99999999?9" styleClass="Wid90" />
+											<p:message for="celular" />
+										</p:panelGrid>
+									</p:panelGrid>
+								</p:fieldset>
+
+								<div class="EmptyBox20"></div>
+								<p:fieldset legend="Endereço">
+									<p:panelGrid columns="4" layout="grid"
+										style="border:0px !important; background:none;"
+										styleClass="FormContent">
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="logradouro"
+												value="#{cadastrarUsuarioMB.usuario.endereco.logradouro}"
+												placeholder="Logradouro" required="true"
+												requiredMessage="O logradouro é obrigatório."
+												style="text-transform: capitalize;" >
+												<f:converter converterId="capitalizarTextoConverter" />
+											</p:inputText>	
+											<p:message for="logradouro" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="numero"
+												value="#{cadastrarUsuarioMB.usuario.endereco.numero}"
+												placeholder="Número" required="true"
+												requiredMessage="O número é obrigatório." />
+											<p:message for="numero" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="complemento"
+												value="#{cadastrarUsuarioMB.usuario.endereco.complemento}"
+												placeholder="Complemento" />
+											<p:message for="complemento" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="bairro"
+												value="#{cadastrarUsuarioMB.usuario.endereco.bairro}"
+												placeholder="Bairro" required="true"
+												requiredMessage="O bairro é obrigatório."
+												style="text-transform: capitalize" >
+												<f:converter converterId="capitalizarTextoConverter" />
+											</p:inputText>
+											<p:message for="bairro" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputText styleClass="Wid90" id="cidade"
+												value="#{cadastrarUsuarioMB.usuario.endereco.cidade}"
+												placeholder="Cidade" required="true"
+												requiredMessage="A cidade é obrigatória."
+												style="text-transform: capitalize" >
+												<f:converter converterId="capitalizarTextoConverter" />
+											</p:inputText>
+											<p:message for="cidade" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+
+											<p:selectOneMenu id="uf"
+												value="#{cadastrarUsuarioMB.usuario.endereco.uf}" styleClass="Wid90"
+												style="width:90%" required="true"
+												requiredMessage="O estado é obrigatório.">
+												<f:selectItem itemLabel="Estado" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItem itemLabel="SP" itemValue="SP" />
+												<f:selectItem itemLabel="AC" itemValue="AC" />
+												<f:selectItem itemLabel="AL" itemValue="AL" />
+												<f:selectItem itemLabel="AP" itemValue="AP" />
+												<f:selectItem itemLabel="AM" itemValue="AM" />
+												<f:selectItem itemLabel="BA" itemValue="BA" />
+												<f:selectItem itemLabel="CE" itemValue="CE" />
+												<f:selectItem itemLabel="DF" itemValue="DF" />
+												<f:selectItem itemLabel="ES" itemValue="ES" />
+												<f:selectItem itemLabel="GO" itemValue="GO" />
+												<f:selectItem itemLabel="MA" itemValue="MA" />
+												<f:selectItem itemLabel="MT" itemValue="MT" />
+												<f:selectItem itemLabel="MS" itemValue="MS" />
+												<f:selectItem itemLabel="MG" itemValue="MG" />
+												<f:selectItem itemLabel="PA" itemValue="PA" />
+												<f:selectItem itemLabel="PB" itemValue="PB" />
+												<f:selectItem itemLabel="PR" itemValue="PR" />
+												<f:selectItem itemLabel="PE" itemValue="PE" />
+												<f:selectItem itemLabel="PI" itemValue="PI" />
+												<f:selectItem itemLabel="RJ" itemValue="RJ" />
+												<f:selectItem itemLabel="RN" itemValue="RN" />
+												<f:selectItem itemLabel="RS" itemValue="RS" />
+												<f:selectItem itemLabel="RO" itemValue="RO" />
+												<f:selectItem itemLabel="RR" itemValue="RR" />
+												<f:selectItem itemLabel="SC" itemValue="SC" />
+												<f:selectItem itemLabel="SE" itemValue="SE" />
+												<f:selectItem itemLabel="TO" itemValue="TO" />
+											</p:selectOneMenu>
+
+
+											<p:message for="uf" />
+										</p:panelGrid>
+
+										<p:panelGrid columns="1" layout="grid"
+											style="border:0px !important; background:none;"
+											styleClass="FormContent">
+											<p:inputMask id="cep" placeholder="CEP"
+												requiredMessage="O CEP é obrigatório. O CEP deve conter 8 dígitos sem hífen. Exemplo: 03564010"
+												value="#{cadastrarUsuarioMB.usuario.endereco.cep}" required="true"
+												mask="99999999" styleClass="Wid90" />
+											<p:message for="cep" />
+										</p:panelGrid>
+
+									</p:panelGrid>
+								</p:fieldset>
+
+								<div class="EmptyBox20"></div>
+								<div class="Container100">
+									<p:commandButton value="Cadastrar-se"
+										action="#{cadastrarUsuarioMB.cadastrarSe()}"
+										icon="fa fa-check Fs16 white" update="@form" />
+									<p:commandButton value="Cancelar" immediate="true"
+										action="#{navegacaoMB.getLogin()}" icon="fa fa-close Fs16 white" />
+								</div>
+
+							</h:form>
+
+
+
+						</div>
+
+
+
+
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+

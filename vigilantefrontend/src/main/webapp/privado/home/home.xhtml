@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="head">
+		<script type="text/javascript">
+			function recuperarGeocode()
+			{
+				if (navigator.geolocation)
+			    {
+			        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);  
+			    } else {
+			        //alert("Seu navegador ou dispositivo não suporta a Geolocalização");
+			    }
+			}
+			function onGeoSuccess(event)
+			{
+			    document.getElementById("form:latitude").value =  event.coords.latitude; 
+			    document.getElementById("form:longitude").value = event.coords.longitude;
+			}
+			function onGeoError(event)
+			{
+			    //alert("Error code: " + event.code + ". " + event.message);
+			}
+		</script>
+	</ui:define>
+
+	<ui:define name="css">
+		<style>
+   		.notification-bubble {
+   			background-color:#d1626c; font-size:12px; padding:3px; color:#F1F6F9; line-height:12px; display:inline-block; margin-top:-5px;
+   		} 
+    	</style>
+	</ui:define>
+
+
+	<ui:define name="content">
+
+		<div class="layout-portlets-box">
+			<div class="Container100">
+				<h1 class="BigTopic">
+					<span class="TexAlLeft">Painel de controle</span>
+				</h1>
+				<h:form id="form">
+					<!-- esse messages recebe mensagens de redirecionamentos, nao ligar o 'autoUpdate', pois 
+					     ele nao exibe as mensagens de redirecionamento
+					 -->
+					<p:messages id="messages" closable="true" />
+					
+					
+					<p:focus />
+					<p:remoteCommand name="onload" onstart="recuperarGeocode()" autoRun="true" process="@this" update="latitude longitude" />
+					<h:inputHidden id="latitude" value="#{usuarioLogadoMB.latitude}" />
+					<h:inputHidden id="longitude" value="#{usuarioLogadoMB.longitude}" />
+					
+					<div class="Container100">
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<p:commandLink 
+								action="#{navegacaoMB.getCadastrarVeiculo()}" style="text-decoration: none; margin-right: 0px;"
+								update="messages">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-car Fs40 gray"></i>
+									<div class="Fs24 gray FontRalewayRegular">Cadastrar
+										veículo</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</p:commandLink>	
+						</div>
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<p:commandLink 
+								action="#{homeMB.emitirAlerta()}" style="text-decoration: none; margin-right: 0px;"
+								update="messages">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-exclamation-triangle Fs40 red MarRight10"></i>
+									<div class="Fs24 red FontRalewayRegular">Emitir alerta</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</p:commandLink>
+
+						</div>
+						<div
+							class="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<p:commandLink 
+								action="#{navegacaoMB.getListarAlertasDoUsuario()}" style="text-decoration: none; margin-right: 0px;" update="messages">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-list Fs40 gray MarRight10"></i>
+									<div class="Fs24 grey FontRalewayRegular">Meus alertas</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</p:commandLink>
+						</div>
+						<h:panelGroup layout="block" rendered="#{request.isUserInRole('super')}"
+							styleClass="Container33 Responsive BorderedBox TexAlCenter HoverEffect ">
+							<p:commandLink
+							 action="#{navegacaoMB.getListarAlertasGeral()}" style="text-decoration: none; margin-right: 0px;" update="messages">
+								<div class="ContainerIndent">
+									<div class="EmptyBox10"></div>
+									<i class="fa fa-globe Fs40 gray MarRight10"></i>
+									<div class="Fs24 grey FontRalewayRegular">
+										<h:outputText value="Alertas " />  
+										<h:outputText value="#{listarAlertasGeralMB.quantidadeAlertaNaoRecepcionado}" styleClass="notification-bubble BordRad3 animated rubberBand" />
+									</div>
+									<div class="EmptyBox10"></div>
+								</div>
+							</p:commandLink>
+						</h:panelGroup>
+
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+
+	</ui:define>
+
+</ui:composition>
